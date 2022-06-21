@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Message extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'price',
+        'author_id',
+        'body',
     ];
 
-    public function categories()
+    public function author()
     {
-        return $this->belongsToMany(ProductCategory::class);
+        return $this->belongsTo(User::class);
     }
 }
