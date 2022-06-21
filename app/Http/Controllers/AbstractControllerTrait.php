@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\ProductCreated;
+use App\Events\ProductUpdated;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,7 +23,8 @@ trait AbstractControllerTrait
     public function store(Request $request)
     {
         $data = $this->validate($request, $this->validationRules);
-        $this->modelClass::create($data);
+        $model = $this->modelClass::create($data);
+        event(new ProductCreated($model));
         return redirect()->route($this->routeName . '.index');
     }
 
@@ -40,7 +43,9 @@ trait AbstractControllerTrait
     public function update(Request $request, $id)
     {
         $data = $this->validate($request, $this->validationRules);
-        $this->modelClass::findOrFail($id)->update($data);
+        $item = $this->modelClass::findOrFail($id)->update($data);
+        event(new ProductUpdated($item));
+
         return redirect()->route($this->routeName . '.index');
     }
 

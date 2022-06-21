@@ -6,6 +6,10 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\ProductCreated;
+use App\Events\ProductUpdated;
+use App\Listeners\SendNotificationForManager;
+use App\Listeners\SendNotificationForAdmin;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +21,13 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        ProductCreated::class => [
+            SendNotificationForManager::class,
+        ],
+        ProductUpdated::class => [
+            SendNotificationForAdmin::class,
         ],
     ];
 
